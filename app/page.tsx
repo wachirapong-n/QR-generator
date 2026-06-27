@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useCallback } from "react";
-import { useDropzone, FileRejection } from "react-dropzone";
 import QRCode from "qrcode";
+import { useCallback, useState } from "react";
+import { FileRejection, useDropzone } from "react-dropzone";
 
 export default function Home() {
   const [url, setUrl] = useState<string>("");
@@ -77,7 +77,7 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen flex items-center justify-center bg-linear-to-br from-[#0f0c29] via-[#302b63] to-[#24243e] px-4 py-8 sm:py-12 font-sans">
+    <main className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0f0c29] via-[#302b63] to-[#24243e] px-4 py-8 sm:py-12 font-sans">
       <div className="w-full max-w-md bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl sm:rounded-3xl p-6 sm:p-10 shadow-2xl">
         {/* Header */}
         <div className="text-center mb-6 sm:mb-8">
@@ -95,58 +95,25 @@ export default function Home() {
           <label className="block text-xs font-semibold text-white/70 uppercase tracking-widest mb-2">
             URL หรือข้อความ
           </label>
-          <div className="flex items-center gap-2">
-            <input
-              type="text"
+          <div className="relative">
+            <textarea
               value={url}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
                 setUrl(e.target.value)
               }
-              onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) =>
-                e.key === "Enter" && handleGenerate()
-              }
               placeholder="https://example.com"
-              className="flex-1 min-w-0 bg-white/8 border border-white/15 rounded-xl px-3 sm:px-4 py-2.5 sm:py-3 text-white text-sm placeholder-white/30 outline-none focus:border-violet-400 transition-colors"
+              rows={3}
+              className="w-full resize-none bg-white/8 border border-white/15 rounded-xl px-3 sm:px-4 py-2.5 sm:py-3 text-white text-sm placeholder-white/30 outline-none focus:border-violet-400 transition-colors"
             />
-            {url && (
-              <button
-                onClick={handleClear}
-                className="w-9 h-9 flex items-center justify-center bg-white/10 text-white/60 rounded-lg hover:bg-white/20 transition-colors text-sm shrink-0"
-              >
-                ✕
-              </button>
-            )}
           </div>
-        </div>
-
-        {/* Divider */}
-        <div className="flex items-center gap-3 my-5 sm:my-6">
-          <div className="flex-1 h-px bg-white/10" />
-          <span className="text-xs text-white/40 whitespace-nowrap">
-            หรืออัปโหลดไฟล์
-          </span>
-          <div className="flex-1 h-px bg-white/10" />
-        </div>
-
-        {/* Dropzone */}
-        <div
-          {...getRootProps()}
-          className={`border-2 border-dashed rounded-xl sm:rounded-2xl p-5 sm:p-7 text-center cursor-pointer transition-all mb-5 sm:mb-6 ${
-            isDragActive
-              ? "border-violet-400 bg-violet-500/10"
-              : "border-white/20 bg-white/3 hover:border-white/40 hover:bg-white/5"
-          }`}
-        >
-          <input {...getInputProps()} />
-          <div className="text-2xl sm:text-3xl mb-2">
-            {isDragActive ? "📂" : "📁"}
-          </div>
-          <p className="text-white/70 text-xs sm:text-sm mb-1">
-            {isDragActive
-              ? "วางไฟล์ที่นี่..."
-              : "ลากไฟล์มาวาง หรือคลิกเพื่อเลือก"}
-          </p>
-          <p className="text-white/30 text-xs">รองรับทุกประเภทไฟล์</p>
+          {url && (
+            <button
+              onClick={handleClear}
+              className="mt-2 px-3 py-1 bg-red-500/20 text-red-400 text-xs font-medium rounded-lg hover:bg-red-500/30 transition-colors border border-red-500/30 select-text"
+            >
+              ล้าง
+            </button>
+          )}
         </div>
 
         {/* Error */}
@@ -163,7 +130,7 @@ export default function Home() {
           className={`w-full py-3 sm:py-3.5 rounded-xl sm:rounded-2xl text-white font-semibold text-sm sm:text-base tracking-wide transition-all ${
             isGenerating
               ? "bg-violet-500/50 cursor-not-allowed"
-              : "bg-linear-to-r from-violet-500 to-indigo-500 hover:from-violet-400 hover:to-indigo-400 active:scale-[0.98]"
+              : "bg-gradient-to-r from-violet-500 to-indigo-500 hover:from-violet-400 hover:to-indigo-400 active:scale-[0.98]"
           }`}
         >
           {isGenerating ? "กำลังสร้าง..." : "สร้าง QR Code"}
